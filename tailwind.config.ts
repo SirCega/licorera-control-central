@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+        // Custom colors for our liquor store application
+        liquorPurple: {
+          50: '#f3f1ff',
+          100: '#ebe5ff',
+          200: '#d9d0ff',
+          300: '#bda9ff',
+          400: '#9b87f5',
+          500: '#7e69ab',
+          600: '#6e59a5',
+          700: '#553c87',
+          800: '#42336d',
+          900: '#322150',
+        },
+        liquorGold: {
+          50: '#fbf8ea',
+          100: '#f6edc3',
+          200: '#eed587',
+          300: '#e7b843',
+          400: '#dfa01e',
+          500: '#d98e17',
+          600: '#ba7312',
+          700: '#964e18',
+          800: '#7c411b',
+          900: '#693819',
+        }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

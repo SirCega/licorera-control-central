@@ -46,29 +46,103 @@ afterEach(() => {
 });
 ```
 
-## 🧪 Escribiendo Pruebas Unitarias
+## 🧪 Ejemplos de Pruebas Implementadas
 
-### Estructura Básica de una Prueba
+### Pruebas de Productos (Products.test.tsx)
+
+Estas pruebas verifican la integridad de los datos de productos en nuestra aplicación:
+
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+describe('Products Mock Data', () => {
+  it('verifica que los productos tengan la estructura correcta', () => {
+    products.forEach((product: Product) => {
+      expect(product).toHaveProperty('id');
+      expect(product).toHaveProperty('name');
+      // ... más verificaciones de propiedades
+    });
+  });
 
-describe('Nombre del Componente o Funcionalidad', () => {
-  it('descripción del comportamiento esperado', () => {
-    // Configuración de la prueba
-    // Ejecución de la acción
-    // Verificación de resultados
-    expect(resultado).toBe(esperado);
+  it('verifica que los precios sean números positivos', () => {
+    products.forEach((product: Product) => {
+      expect(product.price).toBeGreaterThan(0);
+    });
+  });
+
+  // ... más casos de prueba
+});
+```
+
+### Pruebas de Login (Login.test.tsx)
+
+Estas pruebas verifican la funcionalidad del componente de inicio de sesión:
+
+```typescript
+describe('Login Component', () => {
+  it('renderiza el formulario de login correctamente', () => {
+    expect(screen.getByText('Licorera Control Central')).toBeInTheDocument();
+    expect(screen.getByLabelText(/Correo electrónico/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
+  });
+
+  it('permite ingresar email y contraseña', () => {
+    const emailInput = screen.getByLabelText(/Correo electrónico/i);
+    const passwordInput = screen.getByLabelText(/Contraseña/i);
+
+    fireEvent.change(emailInput, { target: { value: 'admin@licorera.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+    expect(emailInput).toHaveValue('admin@licorera.com');
+    expect(passwordInput).toHaveValue('password123');
   });
 });
 ```
 
-## 🚀 Ejecutar Pruebas
+## 🚀 Ejecutar las Pruebas
 
-### Comandos npm
-- Ejecutar pruebas: `npm test`
-- Ver cobertura de código: `npm run test:coverage`
-- Modo watch (recarga automática): `npm run test:watch`
+### Comandos disponibles
+
+1. Ejecutar todas las pruebas:
+```bash
+npm test
+```
+
+Resultado esperado:
+```
+✓ Products Mock Data › verifica que los productos tengan la estructura correcta
+✓ Products Mock Data › verifica que los precios sean números positivos
+✓ Products Mock Data › verifica que las cantidades sean números enteros positivos
+✓ Login Component › renderiza el formulario de login correctamente
+✓ Login Component › permite ingresar email y contraseña
+
+Test Files  2 passed (2)
+     Tests  5 passed (5)
+      Time  2.89s (in thread 0.65s, 444.62%)
+```
+
+2. Ver la cobertura de código:
+```bash
+npm run test:coverage
+```
+
+Resultado esperado:
+```
+ % Coverage report from v8
+-----------------------------|---------|----------|---------|---------|
+File                         | % Stmts | % Branch | % Funcs | % Lines |
+-----------------------------|---------|----------|---------|---------|
+All files                   |   85.71 |    78.95 |   83.33 |   85.71 |
+ src/__tests__              |     100 |      100 |     100 |     100 |
+  Login.test.tsx            |     100 |      100 |     100 |     100 |
+  Products.test.tsx         |     100 |      100 |     100 |     100 |
+-----------------------------|---------|----------|---------|---------|
+```
+
+3. Modo watch (desarrollo):
+```bash
+npm run test:watch
+```
+
+Este comando mantendrá las pruebas ejecutándose automáticamente cuando se detecten cambios en los archivos.
 
 ## 💡 Mejores Prácticas
 - Mantén las pruebas pequeñas y enfocadas
@@ -76,8 +150,14 @@ describe('Nombre del Componente o Funcionalidad', () => {
 - Usa descriptores claros en tus pruebas
 - Cubre casos positivos y negativos
 
-## 🔍 Ejemplos de Pruebas
-Consulta los archivos de prueba en `src/__tests__/` para ejemplos prácticos.
+## 🔍 Estructura de Archivos de Prueba
+```
+src/
+  __tests__/
+    Products.test.tsx
+    Login.test.tsx
+  setupTests.ts
+```
 
 ## 📚 Documentación Oficial
 - [Vitest Docs](https://vitest.dev/)

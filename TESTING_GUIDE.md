@@ -53,12 +53,22 @@ afterEach(() => {
 Estas pruebas verifican la integridad de los datos de productos en nuestra aplicación:
 
 ```typescript
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { Product } from '@/types';
+import { products } from '@/services/mockData';
+
 describe('Products Mock Data', () => {
   it('verifica que los productos tengan la estructura correcta', () => {
     products.forEach((product: Product) => {
       expect(product).toHaveProperty('id');
       expect(product).toHaveProperty('name');
-      // ... más verificaciones de propiedades
+      expect(product).toHaveProperty('description');
+      expect(product).toHaveProperty('price');
+      expect(product).toHaveProperty('boxQuantity');
+      expect(product).toHaveProperty('unitsPerBox');
+      expect(product).toHaveProperty('totalUnits');
+      expect(product).toHaveProperty('category');
     });
   });
 
@@ -68,7 +78,28 @@ describe('Products Mock Data', () => {
     });
   });
 
-  // ... más casos de prueba
+  it('verifica que las cantidades sean números enteros positivos', () => {
+    products.forEach((product: Product) => {
+      expect(Number.isInteger(product.boxQuantity)).toBe(true);
+      expect(product.boxQuantity).toBeGreaterThan(0);
+      expect(Number.isInteger(product.unitsPerBox)).toBe(true);
+      expect(product.unitsPerBox).toBeGreaterThan(0);
+      expect(Number.isInteger(product.totalUnits)).toBe(true);
+      expect(product.totalUnits).toBeGreaterThan(0);
+    });
+  });
+
+  it('verifica que el total de unidades sea igual a boxQuantity * unitsPerBox', () => {
+    products.forEach((product: Product) => {
+      expect(product.totalUnits).toBe(product.boxQuantity * product.unitsPerBox);
+    });
+  });
+
+  it('verifica que las descripciones no estén vacías', () => {
+    products.forEach((product: Product) => {
+      expect(product.description.length).toBeGreaterThan(0);
+    });
+  });
 });
 ```
 
@@ -77,11 +108,44 @@ describe('Products Mock Data', () => {
 Estas pruebas verifican la funcionalidad del componente de inicio de sesión:
 
 ```typescript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from '@/contexts/AuthContext';
+import Login from '@/pages/Login';
+
+const renderLogin = () => {
+  return render(
+    <BrowserRouter>
+      <AuthProvider>
+        <Login />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
 describe('Login Component', () => {
+  beforeEach(() => {
+    renderLogin();
+  });
+
   it('renderiza el formulario de login correctamente', () => {
     expect(screen.getByText('Licorera Control Central')).toBeInTheDocument();
     expect(screen.getByLabelText(/Correo electrónico/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Ingresar/i })).toBeInTheDocument();
+  });
+
+  it('muestra mensajes de error cuando los campos están vacíos', async () => {
+    const submitButton = screen.getByRole('button', { name: /Ingresar/i });
+    fireEvent.click(submitButton);
+    
+    // Verificar que los campos son requeridos
+    const emailInput = screen.getByLabelText(/Correo electrónico/i);
+    const passwordInput = screen.getByLabelText(/Contraseña/i);
+    
+    expect(emailInput).toBeRequired();
+    expect(passwordInput).toBeRequired();
   });
 
   it('permite ingresar email y contraseña', () => {
@@ -149,6 +213,21 @@ Este comando mantendrá las pruebas ejecutándose automáticamente cuando se det
 - Prueba un comportamiento a la vez
 - Usa descriptores claros en tus pruebas
 - Cubre casos positivos y negativos
+
+## Pruebas en la terminal
+
+Creamos una carpeta donde clonaremos el repositorio e instalaremos npm
+
+![image](https://github.com/user-attachments/assets/0d32a54e-f780-4bbe-be9b-df0207c227b7)
+
+Ejecutamos todas las pruebas 
+
+![image](https://github.com/user-attachments/assets/1c1de8ff-3551-4ce4-a541-b50ed4a086fc)
+
+Y como se aprecia las pruebas que creamos para login y productos con vitest nos da la respuesta esperada
+
+Y asi podemos crear multiples pruebas unitarias para cualquier componente en nuestro programa
+
 
 ## 🔍 Estructura de Archivos de Prueba
 ```

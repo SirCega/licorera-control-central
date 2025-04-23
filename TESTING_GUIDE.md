@@ -231,6 +231,8 @@ Y como se aprecia las pruebas que creamos para login y productos con vitest nos 
 
 Y asi podemos crear multiples pruebas unitarias para cualquier componente en nuestro programa
 
+Elegimos Vitest porque se adapta perfectamente a nuestro stack moderno (React + TypeScript + Vite), ofrece pruebas ultra rápidas, configuración mínima y una experiencia de desarrollo superior.
+
 
 ## 🔍 Estructura de Archivos de Prueba
 ```

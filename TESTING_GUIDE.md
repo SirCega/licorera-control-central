@@ -1,6 +1,9 @@
 
 # Guía de Instalación y Configuración de Vitest para Pruebas Unitarias
 
+La aplicación está desarrollada con React, TypeScript, Vite, Tailwind CSS y Shadcn UI.
+Vitest es un framework de pruebas rápido y moderno para aplicaciones JavaScript y TypeScript, especialmente diseñado para integrarse con Vite
+
 ## 📋 Requisitos Previos
 - Node.js (versión 18 o superior)
 - npm (gestor de paquetes)
